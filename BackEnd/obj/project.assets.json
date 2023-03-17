@@ -1318,11 +1318,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mathi\\OneDrive\\Documents\\PII\\BackEnd\\BackEnd.csproj",
+      "projectUniqueName": "C:\\Users\\mathi\\OneDrive\\Documents\\PII\\PII_NinousMathilde\\BackEnd\\BackEnd.csproj",
       "projectName": "BackEnd",
-      "projectPath": "C:\\Users\\mathi\\OneDrive\\Documents\\PII\\BackEnd\\BackEnd.csproj",
+      "projectPath": "C:\\Users\\mathi\\OneDrive\\Documents\\PII\\PII_NinousMathilde\\BackEnd\\BackEnd.csproj",
       "packagesPath": "C:\\Users\\mathi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mathi\\OneDrive\\Documents\\PII\\BackEnd\\obj\\",
+      "outputPath": "C:\\Users\\mathi\\OneDrive\\Documents\\PII\\PII_NinousMathilde\\BackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mathi\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1381,7 +1381,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.406\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.407\\RuntimeIdentifierGraph.json"
       }
     }
   }

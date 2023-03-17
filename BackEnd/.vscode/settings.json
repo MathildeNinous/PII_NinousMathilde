@@ -22,5 +22,6 @@
     ]
   },
   "appService.preDeployTask": "publish-release",
-  "appService.deploySubpath": "bin/Release/net6.0/publish"
+  "appService.deploySubpath": "bin\\Release\\net6.0\\publish",
+  "appService.defaultWebAppToDeploy": "/subscriptions/4fdcb177-82ad-4b49-aa88-5e949b7cb0e3/resourceGroups/appsvc_windows_centralus2/providers/Microsoft.Web/sites/memoBoostPii"
 }
