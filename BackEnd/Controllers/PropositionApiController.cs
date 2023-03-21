@@ -36,6 +36,26 @@ public class PropositionApiController : ControllerBase
         return proposition;
     }
 
+    // GET: api/PropositionApi/{QuestionId} => renvoie la liste de tous les propositions de la question dont l'id est renseigné
+    [HttpGet("GetPropositionsQuestionById/{idQuestion}")]
+    public async Task<ActionResult<IEnumerable<Proposition>>> GetPropositionsQuestionById(int idQuestion)
+    {
+        // Vérifier si la question avec l'ID spécifié existe
+        var question = await _context.Questions.FindAsync(idQuestion);
+        if (question == null)
+        {
+            return NotFound();
+        }
+
+        var propositions = _context.Propositions
+            .Where(p => p.QuestionId == idQuestion);
+
+        if (propositions == null)
+            return NotFound();
+
+        return await propositions.ToListAsync();
+    }
+
     // POST: api/PropositionApi => permet de créer une nouvelle proposition
     [HttpPost]
     public async Task<ActionResult<PropositionDTO>> PostProposition(PropositionDTO propositionDTO)
