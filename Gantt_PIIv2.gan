@@ -51,11 +51,11 @@
         <task id="6" name="Bloc 1.1 - quiz + mini jeu" color="#8cb6ce" meeting="false" start="2023-02-21" duration="24" complete="90" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
             <depend id="7" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="7" name="Bloc 1.2 - score + autres mini jeux + messages proches" color="#8cb6ce" meeting="false" start="2023-03-27" duration="6" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
+        <task id="7" name="Bloc 1.2 - score + autres mini jeux + messages proches" color="#8cb6ce" meeting="false" start="2023-03-27" duration="6" complete="30" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
             <depend id="9" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="8" name="Rendu etat avancement intérmédaire" color="#8cb6ce" meeting="false" start="2023-03-17" duration="1" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true"/>
-        <task id="9" name="Bloc 2.1 - passer une acti + compte proches" color="#8cb6ce" meeting="false" start="2023-04-04" duration="3" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
+        <task id="9" name="Bloc 2.1 - passer une acti + compte proches" color="#8cb6ce" meeting="false" start="2023-04-04" duration="3" complete="10" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
             <depend id="10" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="10" name="Bloc 2.2 - alimenter bd par proches + niv difficulté" color="#8cb6ce" meeting="false" start="2023-04-07" duration="4" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
