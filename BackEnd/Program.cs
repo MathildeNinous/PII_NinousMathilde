@@ -6,25 +6,25 @@ using Microsoft.AspNetCore.HttpLogging;
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpLogging(logging =>
-{
-    // Customize HTTP logging here.
-    logging.LoggingFields = HttpLoggingFields.All;
-    logging.RequestHeaders.Add("sec-ch-ua");
-    logging.ResponseHeaders.Add("my-response-header");
-    logging.MediaTypeOptions.AddText("application/javascript");
-    logging.RequestBodyLogLimit = 4096;
-    logging.ResponseBodyLogLimit = 4096;
-});
+// builder.Services.AddHttpLogging(logging =>
+// {
+//     // Customize HTTP logging here.
+//     logging.LoggingFields = HttpLoggingFields.All;
+//     logging.RequestHeaders.Add("sec-ch-ua");
+//     logging.ResponseHeaders.Add("my-response-header");
+//     logging.MediaTypeOptions.AddText("application/javascript");
+//     logging.RequestBodyLogLimit = 4096;
+//     logging.ResponseBodyLogLimit = 4096;
+// });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins("http://localhost:19000", "https://localhost:19000").AllowAnyHeader().AllowAnyMethod();
-                      });
-});
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy(name: MyAllowSpecificOrigins,
+//                       policy =>
+//                       {
+//                           policy.WithOrigins("http://localhost:19000", "https://localhost:19000").AllowAnyHeader().AllowAnyMethod();
+//                       });
+// });
 /* Ignore circular references when serializing objects into JSON*/
 builder.Services.AddControllersWithViews().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

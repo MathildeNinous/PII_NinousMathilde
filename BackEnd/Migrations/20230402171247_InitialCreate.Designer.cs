@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Migrations
 {
     [DbContext(typeof(BackEndContext))]
-    [Migration("20230314124937_ModifUser")]
-    partial class ModifUser
+    [Migration("20230402171247_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,17 +140,15 @@ namespace BackEnd.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("GameId")
+                    b.Property<int>("QuizId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PlayerName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Points")
+                    b.Property<int>("ValeurScore")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
 
                     b.ToTable("Scores");
                 });
@@ -235,6 +233,17 @@ namespace BackEnd.Migrations
                 {
                     b.HasOne("BackEnd.Models.Quiz", "Quiz")
                         .WithMany("Questions")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
+                });
+
+            modelBuilder.Entity("BackEnd.Models.Score", b =>
+                {
+                    b.HasOne("BackEnd.Models.Quiz", "Quiz")
+                        .WithMany()
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

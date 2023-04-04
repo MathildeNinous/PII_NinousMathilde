@@ -6,8 +6,22 @@ Cette classe sera utilisée pour stocker les résultats des jeux de mémoire de 
 public class Score
 {
     public int Id { get; set; }
-    public int GameId { get; set; }
-    public string PlayerName { get; set; } = null!;
-    public int Points { get; set; }
+    public Quiz Quiz { get; set; } = null!;
+    public int QuizId { get; set; }
+    public int ValeurScore { get; set; }
     public DateTime Date { get; set; }
+
+    public Score()
+    {
+
+    }
+
+    public Score(ScoreDTO DTO)
+    {
+        Id = DTO.Id;
+        QuizId = DTO.QuizId;
+        ValeurScore = DTO.ValeurScore;
+        Date = DTO.Date;
+    }
 }
+

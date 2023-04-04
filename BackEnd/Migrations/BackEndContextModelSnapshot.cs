@@ -137,17 +137,15 @@ namespace BackEnd.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("GameId")
+                    b.Property<int>("QuizId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PlayerName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Points")
+                    b.Property<int>("ValeurScore")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
 
                     b.ToTable("Scores");
                 });
@@ -232,6 +230,17 @@ namespace BackEnd.Migrations
                 {
                     b.HasOne("BackEnd.Models.Quiz", "Quiz")
                         .WithMany("Questions")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
+                });
+
+            modelBuilder.Entity("BackEnd.Models.Score", b =>
+                {
+                    b.HasOne("BackEnd.Models.Quiz", "Quiz")
+                        .WithMany()
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

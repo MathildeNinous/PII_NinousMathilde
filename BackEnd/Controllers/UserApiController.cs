@@ -36,6 +36,42 @@ public class UserApiController : ControllerBase
         return user;
     }
 
+    public class AuthenticationRequest
+    {
+        public string Email { get; set; } = null!;
+        public string Password { get; set; } = null!;
+    }
+
+    [HttpPost("authentification")]
+    public async Task<ActionResult<User>> VerifUser([FromBody] AuthenticationRequest request)
+    {
+        Console.WriteLine("Email: " + request.Email);
+        Console.WriteLine("Mot de passe : " + request.Password);
+
+        // Vérifier si l'email et le mot de passe sont fournis
+        if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+        {
+            return BadRequest("Email ou mot de passe manquant");
+        }
+
+        // Vérifier si l'utilisateur existe dans la base de données
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+
+        if (existingUser == null)
+        {
+            return BadRequest("Email ou mot de passe incorrect");
+        }
+
+        // Vérifier si le mot de passe est correct
+        if (existingUser.Password != request.Password)
+        {
+            return BadRequest("Email ou mot de passe incorrect");
+        }
+
+        // Authentification réussie
+        return existingUser;
+    }
+
     // POST: api/UserApi => permet de créer un nouveau user
     [HttpPost]
     public async Task<ActionResult<User>> PostUser(User user)
