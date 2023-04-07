@@ -1,0 +1,55 @@
+{
+  "plugins": ["plugins/markdown", "plugins/summarize"],
+  "recurseDepth": 10,
+  "linenums": true,
+  "source": {
+    "include": ["./src/", "./readme.MD"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "sourceType": "module",
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "templates": {
+    "default": {
+      "includeDate": false
+    },
+    "applicationName": "Memory Game",
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "opts": {
+    "destination": "./docs/",
+    "lenient": true,
+    "recurse": true,
+    "template": "node_modules/docdash"
+  },
+  "docdash": {
+    "static": true,
+    "search": true,
+    "collapse": true,
+    "sort": false,
+    "menu": {
+      "Demo Website": {
+        "href": "http://www.emresakarya.com/mini-memory",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "demo_link"
+      },
+      "Playground": {
+        "href": "https://codepen.io/softberry/pen/dwBrNB",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "codepen_link"
+      },
+      "GitHub": {
+        "href": "http://github.com/softberry/memory-game",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "github_link"
+      }
+    }
+  }
+}
