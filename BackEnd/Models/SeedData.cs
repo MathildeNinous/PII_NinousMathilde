@@ -346,6 +346,25 @@ public class SeedData
                 proposition10_3
             );
 
+            if (context.Users.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            // Add users
+            User user1 = new User
+            {
+                Email = "leo@dinard.fr",
+                Password = "leoD",
+                FirstName = "Leo",
+                LastName = "Dinard"
+            };
+
+            // Add users to the context
+            context.Users.AddRange(
+                user1
+            );
+
             // Synchronize all changes with database
             context.SaveChanges();
         }
