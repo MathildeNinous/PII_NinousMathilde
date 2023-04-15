@@ -5,36 +5,39 @@ const ConnexionScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [isConnectionValid, setIsConnectionValid] = useState(true)
 
-    const handleConnexion = async () => {
+
+    const login = async () => {
         try {
-            const response = await fetch('https://memoboostpii.azurewebsites.net/api/UserApi/authentification', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    Email: email,
-                    Password: password
-                })
+            const response = await fetch(
+                "https://memoboostpii.azurewebsites.net/api/UserApi/authentification",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ Email: email, Password: password }),
+                }
+            ).then(async (response) => {
+                const responseData = await response.json().then((data) => {
+                    navigation.navigate('AjoutQuiz');
+                });
+                if (!response.ok) {
+                    setIsConnectionValid = false;
+                    console.error(
+                        `Erreur lors de la connexion : ${response.status} - ${response.statusText}`
+                    );
+                }
             });
-
-            if (!response.ok) {
-                throw new Error(`Erreur lors de la connexion: ${response.status} - ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            if (data.success) {
-                navigation.navigate('CreationQuestions', { username: data.user.username });
-            } else {
-                setErrorMessage('Email ou mot de passe incorrect');
-            }
-
         } catch (error) {
             console.error(`Erreur lors de la connexion: ${error.message}`);
-            setErrorMessage('Une erreur est survenue lors de la connexion');
         }
     };
+
+    const ErrorInfos = () => {
+        return isConnectionValid ? <View /> : <Text>Email ou mot de passe incorrect(s)</Text>;
+    }
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
@@ -59,7 +62,8 @@ const ConnexionScreen = ({ navigation }) => {
                         secureTextEntry={true}
                         autoCapitalize="none"
                     />
-                    <TouchableOpacity style={styles.button} onPress={handleConnexion}>
+                    <ErrorInfos />
+                    <TouchableOpacity style={styles.button} onPress={login}>
                         <Text style={styles.buttonText}>Se connecter</Text>
                     </TouchableOpacity>
                     <View style={styles.signupTextContainer}>
@@ -71,7 +75,7 @@ const ConnexionScreen = ({ navigation }) => {
                     <Text style={styles.errorMessage}>{errorMessage}</Text>
                 </View>
             </View>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView >
     );
 };
 
@@ -94,6 +98,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 4,
         elevation: 5,
+    },
+    erreurLogin: {
+        fontSize: 25
     },
     header: {
         alignSelf: 'stretch',

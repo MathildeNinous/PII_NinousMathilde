@@ -6,6 +6,7 @@ import QuizScreen from './screens/QuizScreen';
 import QuizQuestionsScreen from './screens/QuizQuestionsScreen';
 import InscriptionScreen from './screens/InscriptionScreen';
 import ConnexionScreen from './screens/ConnexionScreen';
+import AjoutQuizScreen from './screens/AjoutQuizScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ export default function App() {
         <Stack.Screen name="Inscription" component={InscriptionScreen} options={{ headerTitle: '' }} />
         <Stack.Screen name="Connexion" component={ConnexionScreen} options={{ headerTitle: '' }} />
         <Stack.Screen name="QuizQuestions" component={QuizQuestionsScreen} options={{ headerTitle: '' }} />
+        <Stack.Screen name="AjoutQuiz" component={AjoutQuizScreen} options={{ headerTitle: '' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
