@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="AjoutQuiz">
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ChoixActi" component={ChoixActiScreen} options={{ headerTitle: '' }} />
         <Stack.Screen name="Quiz" component={QuizScreen} options={{ headerTitle: '' }} />

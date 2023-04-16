@@ -1,27 +1,41 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import CheckBox from 'expo-checkbox';
 
 const AjoutQuizScreen = ({ navigation }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [questions, setQuestions] = useState([]);
-
-    const handleQuestionChange = (index, text) => {
-        setQuestions(prevState => {
-            const updatedQuestions = [...prevState];
-            updatedQuestions[index].text = text;
-            return updatedQuestions;
-        });
+    const [questions, setQuestions] = useState([
+        { text: '', propositions: [{ text: '', isCorrect: false }, { text: '', isCorrect: false }, { text: '', isCorrect: false }] },
+        { text: '', propositions: [{ text: '', isCorrect: false }, { text: '', isCorrect: false }, { text: '', isCorrect: false }] },
+        { text: '', propositions: [{ text: '', isCorrect: false }, { text: '', isCorrect: false }, { text: '', isCorrect: false }] },
+        { text: '', propositions: [{ text: '', isCorrect: false }, { text: '', isCorrect: false }, { text: '', isCorrect: false }] },
+        { text: '', propositions: [{ text: '', isCorrect: false }, { text: '', isCorrect: false }, { text: '', isCorrect: false }] }
+    ]);
+    const handleQuestionChange = (index, value) => {
+        const newQuestions = [...questions];
+        newQuestions[index] = { ...newQuestions[index], text: value };
+        setQuestions(newQuestions);
     };
 
-    const handlePropositionChange = (questionIndex, propositionIndex, text, isCorrect) => {
-        setQuestions(prevState => {
-            const updatedQuestions = [...prevState];
-            updatedQuestions[questionIndex].propositions[propositionIndex].text = text;
-            updatedQuestions[questionIndex].propositions[propositionIndex].isCorrect = isCorrect;
-            return updatedQuestions;
-        });
+    const handlePropositionChange = (questionIndex, propositionIndex, value) => {
+        const newQuestions = [...questions];
+        const newPropositions = [...newQuestions[questionIndex].propositions];
+        newPropositions[propositionIndex] = { ...newPropositions[propositionIndex], text: value };
+        newQuestions[questionIndex] = { ...newQuestions[questionIndex], propositions: newPropositions };
+        setQuestions(newQuestions);
     };
+
+    const updateIsCorrectProposition = (questionIndex, propositionIndex) => {
+        const newQuestions = [...questions];
+        const newPropositions = [...newQuestions[questionIndex].propositions];
+        newPropositions.forEach((prop, index) => {
+            newPropositions[index] = { ...prop, isCorrect: index === propositionIndex };
+        });
+        newQuestions[questionIndex] = { ...newQuestions[questionIndex], propositions: newPropositions };
+        setQuestions(newQuestions);
+    };
+
 
     const ajoutQuiz = async () => {
         try {
@@ -31,17 +45,9 @@ const AjoutQuizScreen = ({ navigation }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    Questions: questions.map(q => {
-                        return {
-                            Text: q.question,
-                            Propositions: q.reponses.map(p => {
-                                return {
-                                    Text: p.label,
-                                    IsCorrect: p.correct
-                                };
-                            })
-                        };
-                    })
+                    Titre: title,
+                    Description: description,
+                    Questions: questions,
                 })
             });
             if (!response.ok) {
@@ -55,101 +61,91 @@ const AjoutQuizScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.part1}>
-            <View style={styles.header}>
-                <Text style={styles.title}>Ajouter un nouveau quiz</Text>
-            </View>
-            <View style={styles.form}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Titre"
-                    onChangeText={setTitle}
-                    value={title}
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.textArea}
-                    placeholder="Description"
-                    onChangeText={setDescription}
-                    value={description}
-                    multiline={true}
-                    numberOfLines={4}
-                    autoCapitalize="none"
-                />
-                <View style={styles.ligneView}>
-                    <View style={styles.ligne} />
-                    <View>
-                        <Text style={styles.titleQuestion}>Ajouter des questions</Text>
+        <ScrollView>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Ajouter un nouveau quiz</Text>
+                </View>
+                <View style={styles.form}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Titre du quiz'
+                        onChangeText={text => setTitle(text)}
+                        value={title}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Description'
+                        onChangeText={text => setDescription(text)}
+                        value={description}
+                    />
+                    <View style={styles.hr}>
+                        <View style={styles.trait} />
+                        <View>
+                            <Text style={styles.textHr}>Ajouter vos questions</Text>
+                        </View>
+                        <View style={styles.trait} />
                     </View>
-                    <View style={styles.ligne} />
+                    {questions.map((question, index) => (
+                        <View key={index} style={styles.questionContainer}>
+                            <Text style={styles.questionNumber}>Question {index + 1} :</Text>
+                            <TextInput
+                                style={styles.questionInput}
+                                placeholder='Entrez votre question'
+                                onChangeText={text => handleQuestionChange(index, text)}
+                                value={question.text}
+                            />
+                            <View style={styles.propositionsContainer}>
+                                <View style={styles.propositionContainer}>
+                                    <CheckBox
+                                        value={question.propositions[0].isCorrect}
+                                        onValueChange={() => updateIsCorrectProposition(index, 0)}
+                                    />
+                                    <TextInput
+                                        style={styles.propositionInput}
+                                        placeholder='Proposition 1'
+                                        onChangeText={text => handlePropositionChange(index, 0, text)}
+                                        value={question.propositions[0].text}
+                                    />
+                                </View>
+                                <View style={styles.propositionContainer}>
+                                    {/* <CheckBox
+                                    value={question.propositions[1].isCorrect}
+                                    onValueChange={() => updateIsCorrectProposition(index, 1)}
+                                /> */}
+                                    <TextInput
+                                        style={styles.propositionInput}
+                                        placeholder='Proposition 2'
+                                        onChangeText={text => handlePropositionChange(index, 1, text)}
+                                        value={question.propositions[1].text}
+                                    />
+                                </View>
+                                <View style={styles.propositionContainer}>
+                                    {/* <CheckBox
+                                    value={question.propositions[2].isCorrect}
+                                    onValueChange={() => updateIsCorrectProposition(index, 2)}
+                                /> */}
+                                    <TextInput
+                                        style={styles.propositionInput}
+                                        placeholder='Proposition 3'
+                                        onChangeText={text => handlePropositionChange(index, 2, text)}
+                                        value={question.propositions[2].text}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    ))}
+                    <TouchableOpacity style={styles.button} onPress={ajoutQuiz}>
+                        <Text style={styles.buttonText}>Ajouter le quiz</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
-            <View style={styles.questions}>
-                {questions.map((question, questionIndex) => (
-                    <View key={questionIndex}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder={`Question ${questionIndex + 1}`}
-                            onChangeText={(text) => handleQuestionChange(questionIndex, text)}
-                            value={question.text}
-                            autoCapitalize="none"
-                        />
-                        {question.reponses.map((reponse, reponseIndex) => (
-                            <View key={reponseIndex} style={styles.reponse}>
-                                <CheckBox
-                                    value={reponse.correct}
-                                    onValueChange={(value) =>
-                                        handlePropositionChange(
-                                            questionIndex,
-                                            reponseIndex,
-                                            reponse.label,
-                                            value
-                                        )
-                                    }
-                                />
-                                <TextInput
-                                    style={styles.inputReponse}
-                                    placeholder={`Réponse ${reponseIndex + 1}`}
-                                    onChangeText={(text) =>
-                                        handlePropositionChange(
-                                            questionIndex,
-                                            reponseIndex,
-                                            text,
-                                            reponse.correct
-                                        )
-                                    }
-                                    value={reponse.label}
-                                    autoCapitalize="none"
-                                />
-                            </View>
-                        ))}
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() =>
-                                handleAddReponse(questionIndex, {
-                                    label: '',
-                                    correct: false,
-                                })
-                            }
-                        >
-                            <Text style={styles.buttonText}>Ajouter une réponse</Text>
-                        </TouchableOpacity>
-                    </View>
-                ))}
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleAddQuestion}
-                >
-                    <Text style={styles.buttonText}>Ajouter une question</Text>
-                </TouchableOpacity>
-            </View>
-
-        </View>
+        </ScrollView>
     );
-};
+}
 
 const styles = StyleSheet.create({
-    part1: {
+    container: {
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
@@ -171,7 +167,36 @@ const styles = StyleSheet.create({
         width: '70%',
         marginTop: 30,
     },
-    input: {
+    hr: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    trait: {
+        flex: 1,
+        height: 3,
+        backgroundColor: '#81B7C1'
+    },
+    textHr: {
+        width: 260,
+        fontSize: 23,
+        textAlign: 'center',
+        color: '#81B7C1',
+        fontWeight: 'bold'
+    },
+    questionContainer: {
+        marginVertical: 10,
+        backgroundColor: 'red',
+        width: '100%',
+        backgroundColor: 'rgba(129, 183, 193, 0.4)',
+        padding: 15,
+        borderRadius: 8,
+    },
+    questionNumber: {
+        fontSize: 23,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    questionInput: {
         height: 50,
         width: '100%',
         borderColor: '#81B7C1',
@@ -182,38 +207,36 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
         fontSize: 25,
     },
-    textArea: {
-        width: '100%',
+    propositionsContainer: {
+        alignItems: 'center',
+    },
+    propositionContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 5,
+    },
+    propositionInput: {
+        height: 50,
+        width: '80%',
         borderColor: '#81B7C1',
         borderWidth: 2.5,
         marginBottom: 20,
         paddingHorizontal: 10,
         borderRadius: 10,
         backgroundColor: '#F5FCFF',
+        fontSize: 20,
+        marginLeft: 10,
+    },
+    input: {
+        height: 50,
+        width: '100%',
+        borderColor: '#81B7C1',
+        borderWidth: 2.5,
+        marginBottom: 20,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        backgroundColor: '#F5FCFF',
         fontSize: 25,
-        height: 200,
-        textAlignVertical: 'top'
-    },
-    ligneView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 23,
-    },
-    ligne: {
-        flex: 1,
-        height: 3,
-        backgroundColor: '#81B7C1'
-    },
-    questions: {
-        alignItems: 'flex-end',
-        width: '68%'
-    },
-    titleQuestion: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#81B7C1',
-        width: 300,
-        textAlign: 'center'
     },
     button: {
         backgroundColor: '#81B7C1',
