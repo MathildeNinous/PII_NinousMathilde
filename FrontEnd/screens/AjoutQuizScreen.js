@@ -12,51 +12,84 @@ const AjoutQuizScreen = ({ navigation }) => {
         { text: '', propositions: [{ text: '', isCorrect: false }, { text: '', isCorrect: false }, { text: '', isCorrect: false }] },
         { text: '', propositions: [{ text: '', isCorrect: false }, { text: '', isCorrect: false }, { text: '', isCorrect: false }] }
     ]);
+
     const handleQuestionChange = (index, value) => {
-        const newQuestions = [...questions];
-        newQuestions[index] = { ...newQuestions[index], text: value };
-        setQuestions(newQuestions);
+        setQuestions(prevQuestions => {
+            const newQuestions = [...prevQuestions];
+            newQuestions[index] = { ...newQuestions[index], text: value };
+            return newQuestions;
+        });
     };
 
     const handlePropositionChange = (questionIndex, propositionIndex, value) => {
-        const newQuestions = [...questions];
-        const newPropositions = [...newQuestions[questionIndex].propositions];
-        newPropositions[propositionIndex] = { ...newPropositions[propositionIndex], text: value };
-        newQuestions[questionIndex] = { ...newQuestions[questionIndex], propositions: newPropositions };
-        setQuestions(newQuestions);
+        setQuestions(prevQuestions => {
+            const newQuestions = [...prevQuestions];
+            const newPropositions = [...newQuestions[questionIndex].propositions];
+            newPropositions[propositionIndex] = { ...newPropositions[propositionIndex], text: value };
+            newQuestions[questionIndex] = { ...newQuestions[questionIndex], propositions: newPropositions };
+            return newQuestions;
+        });
     };
 
     const updateIsCorrectProposition = (questionIndex, propositionIndex) => {
-        const newQuestions = [...questions];
-        const newPropositions = [...newQuestions[questionIndex].propositions];
-        newPropositions.forEach((prop, index) => {
-            newPropositions[index] = { ...prop, isCorrect: index === propositionIndex };
+        setQuestions(prevQuestions => {
+            const newQuestions = [...prevQuestions];
+            const newPropositions = [...newQuestions[questionIndex].propositions];
+            newPropositions.forEach((prop, index) => {
+                newPropositions[index] = { ...prop, isCorrect: index === propositionIndex };
+            });
+            newQuestions[questionIndex] = { ...newQuestions[questionIndex], propositions: newPropositions };
+            return newQuestions;
         });
-        newQuestions[questionIndex] = { ...newQuestions[questionIndex], propositions: newPropositions };
-        setQuestions(newQuestions);
     };
 
 
     const ajoutQuiz = async () => {
+        const quiz = {
+            title: title,
+            description: description,
+            questions: questions.map(q => ({
+                text: q.text,
+                propositions: q.propositions.map(p => ({
+                    text: p.text,
+                    isCorrect: p.isCorrect
+                }))
+            }))
+        };
+
         try {
             const response = await fetch('https://memoboostpii.azurewebsites.net/api/QuizApi', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    Titre: title,
-                    Description: description,
-                    Questions: questions,
-                })
+                body: JSON.stringify(quiz)
             });
+
             if (!response.ok) {
-                throw new Error('Erreur : la réponse n\'a pas été correctement renvoyée');
-            } else {
-                navigation.navigate('Quiz');
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
             }
+
+            const data = await response.json();
+            const quizId = data.id;
+
+            // Ajouter les questions au quiz en utilisant l'ID retourné
+            const questionsResponse = await fetch(`https://memoboostpii.azurewebsites.net/api/QuizApi/${quizId}/AddQuestions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(questions)
+            });
+
+            if (!questionsResponse.ok) {
+                throw new Error(`Error ${questionsResponse.status}: ${questionsResponse.statusText}`);
+            }
+
+            navigation.navigate('Quiz');
         } catch (error) {
-            console.error(`Erreur lors de la création du quiz: ${error.message}`);
+            console.error(error);
+            // Afficher un message d'erreur à l'utilisateur
         }
     };
 
@@ -74,7 +107,7 @@ const AjoutQuizScreen = ({ navigation }) => {
                         value={title}
                     />
                     <TextInput
-                        style={styles.input}
+                        style={styles.textArea}
                         placeholder='Description'
                         onChangeText={text => setDescription(text)}
                         value={description}
@@ -96,6 +129,7 @@ const AjoutQuizScreen = ({ navigation }) => {
                                 value={question.text}
                             />
                             <View style={styles.propositionsContainer}>
+                                <Text style={styles.checkboxText}>Cochez la bonne réponse</Text>
                                 <View style={styles.propositionContainer}>
                                     <CheckBox
                                         value={question.propositions[0].isCorrect}
@@ -109,10 +143,10 @@ const AjoutQuizScreen = ({ navigation }) => {
                                     />
                                 </View>
                                 <View style={styles.propositionContainer}>
-                                    {/* <CheckBox
-                                    value={question.propositions[1].isCorrect}
-                                    onValueChange={() => updateIsCorrectProposition(index, 1)}
-                                /> */}
+                                    <CheckBox
+                                        value={question.propositions[1].isCorrect}
+                                        onValueChange={() => updateIsCorrectProposition(index, 1)}
+                                    />
                                     <TextInput
                                         style={styles.propositionInput}
                                         placeholder='Proposition 2'
@@ -121,10 +155,10 @@ const AjoutQuizScreen = ({ navigation }) => {
                                     />
                                 </View>
                                 <View style={styles.propositionContainer}>
-                                    {/* <CheckBox
-                                    value={question.propositions[2].isCorrect}
-                                    onValueChange={() => updateIsCorrectProposition(index, 2)}
-                                /> */}
+                                    <CheckBox
+                                        value={question.propositions[2].isCorrect}
+                                        onValueChange={() => updateIsCorrectProposition(index, 2)}
+                                    />
                                     <TextInput
                                         style={styles.propositionInput}
                                         placeholder='Proposition 3'
@@ -160,6 +194,19 @@ const styles = StyleSheet.create({
         fontSize: 45,
         fontWeight: 'bold',
         color: 'white',
+    },
+    textArea: {
+        width: '100%',
+        borderColor: '#81B7C1',
+        borderWidth: 2.5,
+        marginBottom: 20,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        backgroundColor: '#F5FCFF',
+        fontSize: 20,
+        height: 200,
+        textAlignVertical: 'top',
+        paddingTop: 10
     },
     form: {
         alignItems: 'center',
@@ -205,7 +252,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 10,
         backgroundColor: '#F5FCFF',
-        fontSize: 25,
+        fontSize: 20,
     },
     propositionsContainer: {
         alignItems: 'center',
@@ -227,6 +274,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginLeft: 10,
     },
+    checkboxText: {
+        fontSize: 20,
+        fontStyle: 'italic',
+        marginBottom: 7
+    },
     input: {
         height: 50,
         width: '100%',
@@ -236,7 +288,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 8,
         backgroundColor: '#F5FCFF',
-        fontSize: 25,
+        fontSize: 20,
     },
     button: {
         backgroundColor: '#81B7C1',
@@ -244,7 +296,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop: 10,
         marginBottom: 60,
-        minWidth: 150,
+        minWidth: 200,
         alignItems: 'center',
     },
     buttonText: {
