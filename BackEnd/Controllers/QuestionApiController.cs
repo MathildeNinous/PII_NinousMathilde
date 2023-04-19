@@ -61,41 +61,60 @@ public class QuestionApiController : ControllerBase
         return await questions.ToListAsync();
     }
 
-    // POST: api/QuestionApi => permet de créer une nouvelle question
+    // POST: api/QuestionApi => permet de créer une nouvelle question 
     [HttpPost]
-    public async Task<ActionResult<Question>> PostQuestion(QuestionDTO question)
+    public async Task<ActionResult<Question>> PostQuestion(QuestionDTO questionDTO)
     {
-        Question _question = new Question(question);
-
-        // Rechercher le quiz correspondant à l'ID fourni
-        var quiz = await _context.Quizzes.FindAsync(_question.QuizId);
+        var quiz = await _context.Quizzes.FindAsync(questionDTO.QuizId);
         if (quiz == null)
         {
             return BadRequest("Le quiz spécifié n'existe pas.");
         }
 
-        _question.Quiz = quiz;
+        var question = new Question
+        {
+            Text = questionDTO.Text,
+            Quiz = quiz,
+            Propositions = new List<Proposition>()
+        };
 
-        _context.Questions.Add(_question);
+        _context.Questions.Add(question);
         await _context.SaveChangesAsync();
 
-        // Créer les propositions de réponse
-        foreach (var propDTO in question.Propositions)
+        return CreatedAtAction(nameof(PostQuestion), new { id = question.Id }, question);
+    }
+
+    // POST: api/QuestionApi/{id}/AddPropositions
+    [HttpPost("{id}/AddPropositions")]
+    public async Task<IActionResult> AddPropositionsToQuestion(int id, List<PropositionDTO> propositionDTOs)
+    {
+        var question = await _context.Questions.Include(q => q.Propositions).FirstOrDefaultAsync(q => q.Id == id);
+
+        if (question == null)
         {
-            var prop = new Proposition();
-            prop.Id = _question.Id;
-            prop.Text = propDTO.Text;
-            prop.IsCorrect = propDTO.IsCorrect;
-            prop.Question = _question;
-            _question.Propositions.Add(prop); // Ajouter la proposition à la liste de propositions de la question
-            _context.Propositions.Add(prop);
+            return NotFound();
+        }
+
+        foreach (var propositionDTO in propositionDTOs)
+        {
+            var proposition = new Proposition
+            {
+                Text = propositionDTO.Text,
+                IsCorrect = propositionDTO.IsCorrect,
+                QuestionId = propositionDTO.QuestionId,
+                Question = question
+            };
+
+            _context.Propositions.Add(proposition);
+
+            question.Propositions.Add(proposition);
         }
 
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(PostQuestion), new { id = _question.Id }, _question);
-
+        return NoContent();
     }
+
 
     // PUT: api/QuestionApi/5 => mettre à jour une question
     [HttpPut("{id}")]

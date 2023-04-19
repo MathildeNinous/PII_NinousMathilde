@@ -12,13 +12,12 @@ const MiniJeuScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Text>TEST</Text>
             {/* {showGame ? (
-                <App />
+                <AppContainer />
             ) : (
                 <>
                     <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Jeu du memory</Text>
+                        <Text style={styles.title}>Jeu du tetris</Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <Button title="Jouez" onPress={handleStartGame} />

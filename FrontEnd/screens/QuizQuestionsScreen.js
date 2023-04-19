@@ -18,9 +18,7 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
         try {
             setLoading(true);
             const response = await fetch(`https://memoboostpii.azurewebsites.net/api/QuestionApi/GetQuestionsQuizById/${quizId}`);
-            const data = await response.json(); //data contient les questions du quiz
-            //map permet d'exécuter une fonction sur chaque élément de data
-            //async question = fct async qui récupére les propositions de réponse de chaque question.
+            const data = await response.json();
             const questionsWithPropositions = await Promise.all(
                 data.map(async (question) => {
                     const propositions = await fetchQuestionPropositions(question.id);
@@ -30,10 +28,6 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
                     };
                 })
             );
-            //Promise.all => attend la résolution de toutes les promesses retournées par fetchQuestionPropositions
-            // avant de passer à la suite du code.
-            //Une fois que toutes les promesses sont résolues, Promise.all retourne un nouveau tableau contenant les propositions de réponse pour chaque question.
-            //...question permet de copier toutes les propriétés de l'objet question dans un nouvel objet, auquel on ajoute ensuite la propriété propositions en la définissant simplement comme propositions.
             setQuestions(questionsWithPropositions);
             setLoading(false);
         } catch (error) {
@@ -52,10 +46,12 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
         }
     };
 
+    //exécuté une fois au début
     useEffect(() => {
         fetchQuestions(quizId);
     }, [quizId]);
 
+    //méthode pour ajouter le score à la bd
     const addScoreToBD = async () => {
         try {
             const response = await fetch('https://memoboostpii.azurewebsites.net/api/ScoreApi', {
@@ -84,6 +80,7 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
         }
     };
 
+    //méthode qui gère quand l'utilisateur clique sur une proposition de réponse
     const handleAnswerPress = (selectedAnswer) => {
         setUserAnswer(selectedAnswer);
         setShowAnswer(true);
@@ -94,13 +91,15 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
         }
     };
 
+    //méthode qui gère la transition entre les différentes questions (quand l'utilisateur clique sur question suivante)
     const handleNextQuestionPress = () => {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setShowAnswer(false);
         setUserAnswer(null);
     };
 
-    // Calculer le score total
+
+    // méthode qui calcule le score total du joueur 
     const calculateScore = () => {
         let totalScore = 0;
         for (let i = 0; i < questions.length; i++) {
@@ -111,6 +110,8 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
         return totalScore;
     };
 
+
+    //méthode qui gère quand l'utilisateur décide de terminer le quiz
     const handleFinishQuizPress = async () => {
         const currentDate = dayjs().format('YYYY-MM-DD');
         const score = calculateScore(); // Calculer le score
@@ -127,7 +128,7 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
         }
     };
 
-    //si ça charge
+    //si ça charge longtemps
     if (loading) {
         // Afficher l'indicateur de chargement
         return (
@@ -135,7 +136,7 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
                 <ActivityIndicator size="large" />
             </View>
         );
-    } else if (currentQuestionIndex >= questions.length) {
+    } else if (currentQuestionIndex >= questions.length) { //si on arrive à la dernière question
         // Afficher le score final
         return (
             <View style={styles.container}>
@@ -145,7 +146,7 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
             </View>
         );
-    } else {
+    } else { //si on est en train de faire le quiz
         return (
             <View style={styles.container}>
                 {currentQuestion ? (

@@ -19,17 +19,16 @@ const ConnexionScreen = ({ navigation }) => {
                     },
                     body: JSON.stringify({ Email: email, Password: password }),
                 }
-            ).then(async (response) => {
-                const responseData = await response.json().then((data) => {
-                    navigation.navigate('AjoutQuiz');
-                });
-                if (!response.ok) {
-                    setIsConnectionValid = false;
-                    console.error(
-                        `Erreur lors de la connexion : ${response.status} - ${response.statusText}`
-                    );
-                }
-            });
+            );
+            if (!response.ok) {
+                setIsConnectionValid(false);
+                console.error(
+                    `Erreur lors de la connexion : ${response.status} - ${response.statusText}`
+                );
+            } else {
+                const data = await response.json();
+                navigation.navigate("QuizInfoForm");
+            }
         } catch (error) {
             console.error(`Erreur lors de la connexion: ${error.message}`);
         }

@@ -48,30 +48,6 @@ public class QuizApiController : ControllerBase
 
         _context.Quizzes.Add(quiz);
 
-        foreach (var questionDTO in quizDTO.Questions)
-        {
-            var question = new Question
-            {
-                Text = questionDTO.Text,
-                Quiz = quiz,
-                Propositions = new List<Proposition>()
-            };
-
-            _context.Questions.Add(question);
-
-            foreach (var propositionDTO in questionDTO.Propositions)
-            {
-                var proposition = new Proposition
-                {
-                    Text = propositionDTO.Text,
-                    IsCorrect = propositionDTO.IsCorrect,
-                    Question = question
-                };
-
-                _context.Propositions.Add(proposition);
-            }
-        }
-
         await _context.SaveChangesAsync();
 
         return CreatedAtAction("GetQuiz", new { id = quiz.Id }, quiz);
@@ -98,18 +74,6 @@ public class QuizApiController : ControllerBase
             };
 
             _context.Questions.Add(question);
-
-            foreach (var propositionDTO in questionDTO.Propositions)
-            {
-                var proposition = new Proposition
-                {
-                    Text = propositionDTO.Text,
-                    IsCorrect = propositionDTO.IsCorrect,
-                    Question = question
-                };
-
-                _context.Propositions.Add(proposition);
-            }
 
             quiz.Questions.Add(question);
         }
