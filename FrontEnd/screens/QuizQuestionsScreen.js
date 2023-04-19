@@ -53,6 +53,7 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
 
     //méthode pour ajouter le score à la bd
     const addScoreToBD = async () => {
+        const currentDate = dayjs().format('YYYY-MM-DD');
         try {
             const response = await fetch('https://memoboostpii.azurewebsites.net/api/ScoreApi', {
                 method: 'POST',
@@ -113,7 +114,6 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
 
     //méthode qui gère quand l'utilisateur décide de terminer le quiz
     const handleFinishQuizPress = async () => {
-        const currentDate = dayjs().format('YYYY-MM-DD');
         const score = calculateScore(); // Calculer le score
         try {
             await addScoreToBD(); // Attendre la fin de la requête POST
