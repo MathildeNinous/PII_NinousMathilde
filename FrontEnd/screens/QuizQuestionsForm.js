@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     },
     questions: {
         alignItems: 'center',
-        width: '100%',
     },
     input: {
         height: 50,

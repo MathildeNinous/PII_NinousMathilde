@@ -52,8 +52,9 @@ const QuizPropositionsForm = ({ navigation, route }) => {
                     <Text style={styles.title}>Ajouter des propositions de réponses</Text>
                     <Text style={styles.subtitle}>Etape 4/4</Text>
                 </View>
-                <View style={styles.form}>
+                <View style={styles.propositions}>
                     <Text style={styles.question}>{question}</Text>
+                    <Text style={styles.indication}>----------------------- Cochez la bonne réponse -----------------------</Text>
                     {propositions.map((proposition, index) => (
                         <View key={index} style={styles.proposition}>
                             <TextInput
@@ -74,10 +75,10 @@ const QuizPropositionsForm = ({ navigation, route }) => {
                             </TouchableOpacity>
                         </View>
                     ))}
+                    <TouchableOpacity style={styles.button} onPress={submitPropositions}>
+                        <Text style={styles.buttonText}>Ajouter les propositions</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.button} onPress={submitPropositions}>
-                    <Text style={styles.buttonText}>Ajouter les propositions</Text>
-                </TouchableOpacity>
             </View>
         </ScrollView>
     );
@@ -86,46 +87,56 @@ const QuizPropositionsForm = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        backgroundColor: '#F5FCFF',
     },
     header: {
-        marginVertical: 20,
+        backgroundColor: '#81B7C1',
+        paddingVertical: 20,
+        alignItems: 'center',
     },
     title: {
-        fontSize: 24,
+        fontSize: 45,
         fontWeight: 'bold',
-        textAlign: 'center',
+        color: 'white',
     },
     subtitle: {
         fontStyle: 'italic',
         fontSize: 35,
         color: 'white',
     },
-    form: {
+    propositions: {
         marginVertical: 20,
+        alignItems: 'center',
+        width: '100%',
+        marginTop: 50
     },
     question: {
-        fontSize: 18,
+        fontSize: 25,
         fontWeight: 'bold',
         marginBottom: 20,
+        color: '#81B7C1',
     },
     proposition: {
         flexDirection: 'row',
         alignItems: 'center',
         marginVertical: 10,
+        width: 600
     },
     input: {
         flex: 1,
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
+        height: 50,
+        borderColor: '#81B7C1',
+        borderWidth: 2.5,
+        borderRadius: 10,
         padding: 10,
+        fontSize: 23,
         marginRight: 10,
     },
     checkbox: {
-        width: 20,
-        height: 20,
-        borderWidth: 1,
+        width: 40,
+        height: 40,
+        borderWidth: 3,
         borderColor: '#ccc',
         borderRadius: 5,
         justifyContent: 'center',
@@ -143,17 +154,25 @@ const styles = StyleSheet.create({
         borderRadius: 2,
         backgroundColor: 'white',
     },
+    indication: {
+        fontSize: 25,
+        fontStyle: "italic",
+        marginTop: 20,
+        marginBottom: 15,
+        color: '#81B7C1'
+    },
     button: {
-        backgroundColor: '#007AFF',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        marginVertical: 10,
+        backgroundColor: '#81B7C1',
+        padding: 10,
+        borderRadius: 10,
+        width: 350,
+        marginBottom: 100,
+        marginTop: 30
     },
     buttonText: {
         color: '#fff',
+        fontSize: 23,
         fontWeight: 'bold',
-        fontSize: 16,
         textAlign: 'center',
     },
 });
