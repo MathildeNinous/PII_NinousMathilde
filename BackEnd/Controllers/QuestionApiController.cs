@@ -102,7 +102,6 @@ public class QuestionApiController : ControllerBase
                 Text = propositionDTO.Text,
                 IsCorrect = propositionDTO.IsCorrect,
                 QuestionId = propositionDTO.QuestionId,
-                Question = question
             };
 
             _context.Propositions.Add(proposition);

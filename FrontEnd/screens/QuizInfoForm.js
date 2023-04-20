@@ -26,6 +26,7 @@ const QuizInfoForm = ({ navigation }) => {
             }
 
             const data = await response.json();
+            console.log("quiz", data)
             const quizId = data.id;
 
             navigation.navigate('QuizQuestionsForm', { quizId: quizId })

@@ -14,6 +14,7 @@ const QuizQuestionsForm = ({ navigation, route }) => {
     const submitQuestions = async () => {
         try {
             const questionDTOs = questions.map(text => ({ Text: text, QuizId: quizId }));
+
             const response = await fetch(`https://memoboostpii.azurewebsites.net/api/QuizApi/${quizId}/AddQuestions`, {
                 method: 'POST',
                 headers: {

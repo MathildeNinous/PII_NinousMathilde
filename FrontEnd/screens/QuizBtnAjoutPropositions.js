@@ -2,10 +2,24 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 
 const QuizBtnAjoutPropositions = ({ navigation, route }) => {
-    const { questions } = route.params;
+    const { questions, addedQuestionId } = route.params || {};
+    const [cpt, setCpt] = useState(1);
+
+    const isQuestionAdded = (question) => {
+        if (!addedQuestionId) {
+            return false;
+        }
+        const addedQuestion = questions.find(q => q.id === addedQuestionId);
+        return addedQuestion && addedQuestion.id === question.id;
+    };
 
     const handleQuestionPress = (question) => {
-        navigation.navigate('QuizPropositionsForm', { question });
+        setCpt(cpt + 1);
+        if (cpt == 5) {
+            navigation.navigate('Quiz');
+        }
+        console.log("cpt", cpt);
+        navigation.navigate('QuizPropositionsForm', { question, questions, cpt: cpt });
     };
 
     return (
@@ -15,11 +29,11 @@ const QuizBtnAjoutPropositions = ({ navigation, route }) => {
                 <Text style={styles.subtitle}>Etape 3/4</Text>
             </View>
             <View style={styles.questions}>
-                {questions.map((question, index) => (
+                {questions ? questions.map((question, index) => (
                     <TouchableOpacity key={index} style={styles.button} onPress={() => handleQuestionPress(question)}>
                         <Text style={styles.buttonText}>{question}</Text>
                     </TouchableOpacity>
-                ))}
+                )) : null}
             </View>
         </View>
     );

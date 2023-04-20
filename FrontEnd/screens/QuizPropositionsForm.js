@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const QuizPropositionsForm = ({ navigation, route }) => {
-    const { question } = route.params;
+    const { question, questions, cpt } = route.params;
+    const [currentCount, setCpt] = useState(cpt);
     const [propositions, setPropositions] = useState(Array(3).fill().map(() => ({ text: '', isCorrect: false })));
-
 
     const handlePropositionChange = (index, text) => {
         const newPropositions = [...propositions];
@@ -18,15 +18,39 @@ const QuizPropositionsForm = ({ navigation, route }) => {
         setPropositions(newPropositions);
     };
 
+    const getCurrentQuestionId = async () => {
+        try {
+            const response = await fetch('https://memoboostpii.azurewebsites.net/api/QuestionApi');
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
+            const questions = await response.json();
+            const currentQuestion = questions.find(q => q.text === question);
+            if (!currentQuestion) {
+                throw new Error('Current question not found');
+            }
+            return currentQuestion.id;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const submitPropositions = async () => {
+        setCpt(currentCount + 1);
+        const questionId = await getCurrentQuestionId();
+        if (!questionId) {
+            return;
+        }
+
         // envoyer les propositions au serveur
         try {
             const propositionDTOs = propositions.map(proposition => ({
                 Text: proposition.text,
                 IsCorrect: proposition.isCorrect,
-                QuestionId: question.Id
+                QuestionId: questionId
             }));
-            const response = await fetch(`https://memoboostpii.azurewebsites.net/api/QuestionApi/${question.Id}/AddPropositions`, {
+            console.log(propositionDTOs);
+            const response = await fetch(`https://memoboostpii.azurewebsites.net/api/QuestionApi/${questionId}/AddPropositions`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,11 +61,15 @@ const QuizPropositionsForm = ({ navigation, route }) => {
             if (!response.ok) {
                 throw new Error(`Error ${response.status}: ${response.statusText}`);
             }
-            console.log("propositions", propositionDTOs)
-            navigation.navigate('QuizBtnAjoutPropositions');
+
+            if (currentCount == 5) {
+                navigation.navigate('Quiz');
+            }
+            console.log("currentCount", currentCount);
+            navigation.navigate('QuizBtnAjoutPropositions', { questions, addedQuestionId: questionId });
+
         } catch (error) {
             console.error(error);
-            // Afficher un message d'erreur à l'utilisateur
         }
     };
 

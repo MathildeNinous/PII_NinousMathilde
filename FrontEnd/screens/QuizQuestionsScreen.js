@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import QuizScreen from './QuizScreen';
+import dayjs from "dayjs";
 
 const QuizQuestionsScreen = ({ route, navigation }) => {
     const quizId = route.params;
@@ -99,22 +100,8 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
         setUserAnswer(null);
     };
 
-
-    // méthode qui calcule le score total du joueur 
-    const calculateScore = () => {
-        let totalScore = 0;
-        for (let i = 0; i < questions.length; i++) {
-            if (questions[i].propositions.find((answer) => answer.isCorrect).text === questions[i].userAnswer.text) {
-                totalScore++;
-            }
-        }
-        return totalScore;
-    };
-
-
     //méthode qui gère quand l'utilisateur décide de terminer le quiz
     const handleFinishQuizPress = async () => {
-        const score = calculateScore(); // Calculer le score
         try {
             await addScoreToBD(); // Attendre la fin de la requête POST
 
@@ -140,8 +127,10 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
         // Afficher le score final
         return (
             <View style={styles.container}>
-                <Text style={styles.end}>Quiz terminé ! Votre score est de {score}/{questions.length}</Text>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Quiz')}>
+                <Text style={styles.end}>
+                    Quiz terminé ! Votre score est de {score}/{questions.length}
+                </Text>
+                <TouchableOpacity style={styles.button} onPress={handleFinishQuizPress}>
                     <Text style={styles.buttonText}>Terminer</Text>
                 </TouchableOpacity>
             </View>
@@ -192,12 +181,6 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
                                 <Text style={styles.buttonText}>Question suivante</Text>
                             </TouchableOpacity>
                         )}
-                        {currentQuestionIndex === questions.length - 1 && !showAnswer && (
-                            <TouchableOpacity style={styles.button} onPress={handleFinishQuizPress}>
-                                <Text style={styles.buttonText}>Terminer le quiz</Text>
-                            </TouchableOpacity>
-                        )}
-
                     </>
                 ) : (
                     <></>
