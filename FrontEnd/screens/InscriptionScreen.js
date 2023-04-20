@@ -37,7 +37,7 @@ const InscriptionScreen = ({ navigation }) => {
     };
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.popup}>
                 <View style={styles.header}>
                     <Text style={styles.title}>Inscription</Text>
@@ -78,7 +78,7 @@ const InscriptionScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-        </KeyboardAvoidingView>
+        </View>
     );
 };
 

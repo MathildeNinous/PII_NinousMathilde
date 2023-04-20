@@ -35,11 +35,11 @@ const ConnexionScreen = ({ navigation }) => {
     };
 
     const ErrorInfos = () => {
-        return isConnectionValid ? <View /> : <Text>Email ou mot de passe incorrect(s)</Text>;
+        return isConnectionValid ? <View /> : <Text style={styles.errorTxt}>Email ou mot de passe incorrect(s)</Text>;
     }
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.popup}>
                 <View style={styles.header}>
                     <Text style={styles.title}>Connexion</Text>
@@ -74,7 +74,7 @@ const ConnexionScreen = ({ navigation }) => {
                     <Text style={styles.errorMessage}>{errorMessage}</Text>
                 </View>
             </View>
-        </KeyboardAvoidingView >
+        </View >
     );
 };
 
@@ -141,6 +141,11 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         minWidth: 150,
         alignItems: 'center',
+    },
+    errorTxt: {
+        fontSize: 20,
+        color: 'red',
+        fontWeight: 'bold'
     },
     buttonText: {
         color: 'white',

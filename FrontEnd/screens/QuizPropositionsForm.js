@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native';
 
 const QuizPropositionsForm = ({ navigation, route }) => {
     const { question, questions } = route.params;
@@ -67,41 +67,46 @@ const QuizPropositionsForm = ({ navigation, route }) => {
     };
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Ajouter des propositions de réponses</Text>
-                    <Text style={styles.subtitle}>Etape 4/4</Text>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 25}
+        >
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Ajouter des propositions de réponses</Text>
+                        <Text style={styles.subtitle}>Etape 4/4</Text>
+                    </View>
+                    <View style={styles.propositions}>
+                        <Text style={styles.question}>{question}</Text>
+                        <Text style={styles.indication}>----------------------- Cochez la bonne réponse -----------------------</Text>
+                        {propositions.map((proposition, index) => (
+                            <View key={index} style={styles.proposition}>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder={`Proposition ${index + 1}`}
+                                    onChangeText={(text) => handlePropositionChange(index, text)}
+                                    value={proposition.text}
+                                />
+                                <TouchableOpacity
+                                    style={styles.checkbox}
+                                    onPress={() => handlePropositionCheck(index, !proposition.isCorrect)}
+                                >
+                                    {proposition.isCorrect ? (
+                                        <View style={styles.checkedBox} />
+                                    ) : (
+                                        <View style={styles.uncheckedBox} />
+                                    )}
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                        <TouchableOpacity style={styles.button} onPress={submitPropositions}>
+                            <Text style={styles.buttonText}>Ajouter les propositions</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={styles.propositions}>
-                    <Text style={styles.question}>{question}</Text>
-                    <Text style={styles.indication}>----------------------- Cochez la bonne réponse -----------------------</Text>
-                    {propositions.map((proposition, index) => (
-                        <View key={index} style={styles.proposition}>
-                            <TextInput
-                                style={styles.input}
-                                placeholder={`Proposition ${index + 1}`}
-                                onChangeText={(text) => handlePropositionChange(index, text)}
-                                value={proposition.text}
-                            />
-                            <TouchableOpacity
-                                style={styles.checkbox}
-                                onPress={() => handlePropositionCheck(index, !proposition.isCorrect)}
-                            >
-                                {proposition.isCorrect ? (
-                                    <View style={styles.checkedBox} />
-                                ) : (
-                                    <View style={styles.uncheckedBox} />
-                                )}
-                            </TouchableOpacity>
-                        </View>
-                    ))}
-                    <TouchableOpacity style={styles.button} onPress={submitPropositions}>
-                        <Text style={styles.buttonText}>Ajouter les propositions</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 

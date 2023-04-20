@@ -11,7 +11,7 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.subtitle}>Le jeu pour booster votre mémoire</Text>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate("ChoixActi")}
+                    onPress={() => navigation.navigate("QuizStack", { screen: "ChoixActi" })}
                 >
                     <Text style={styles.buttonText}>Commencer</Text>
                 </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, FlatList, KeyboardAvoidingView } from 'react-native';
 
 const QuizQuestionsForm = ({ navigation, route }) => {
     const { quizId } = route.params;
@@ -44,22 +44,29 @@ const QuizQuestionsForm = ({ navigation, route }) => {
     );
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title}>Ajouter des questions</Text>
-                <Text style={styles.subtitle}>Etape 2/4</Text>
-            </View>
-            <View style={styles.questions}>
-                <FlatList
-                    data={questions}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-                <TouchableOpacity style={styles.button} onPress={submitQuestions}>
-                    <Text style={styles.buttonText}>Passer à l'étape suivante</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 25}
+        >
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Ajouter des questions</Text>
+                        <Text style={styles.subtitle}>Etape 2/4</Text>
+                    </View>
+                    <View style={styles.questions}>
+                        <FlatList
+                            data={questions}
+                            renderItem={renderItem}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                        <TouchableOpacity style={styles.button} onPress={submitQuestions}>
+                            <Text style={styles.buttonText}>Passer à l'étape suivante</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 
 };

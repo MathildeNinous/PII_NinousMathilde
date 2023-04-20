@@ -1,29 +1,19 @@
 import React from 'react';
 import { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 
+const image = require("../assets/comingSoon.jpg");
 
 const MiniJeuScreen = () => {
-    const [showGame, setShowGame] = useState(false);
-
-    const handleStartGame = () => {
-        setShowGame(true);
-    };
-
     return (
         <View style={styles.container}>
-            {/* {showGame ? (
-                <AppContainer />
-            ) : (
-                <>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Jeu du tetris</Text>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button title="Jouez" onPress={handleStartGame} />
-                    </View>
-                </>
-            )} */}
+            <Text style={styles.title}>Fonctionnalité à venir ...</Text>
+            <Image
+                source={image}
+                style={styles.sectionImage}
+                accessible={true}
+                accessibilityLabel="ComingSoon"
+            />
         </View>
     );
 };
@@ -34,16 +24,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    titleContainer: {
-        marginBottom: 20,
+    sectionImage: {
+        width: 400,
+        height: 400,
+        marginRight: 20,
     },
     title: {
-        fontSize: 24,
+        fontSize: 40,
         fontWeight: 'bold',
-    },
-    buttonContainer: {
-        width: '80%',
-    },
+    }
 });
 
 export default MiniJeuScreen;

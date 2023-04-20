@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, KeyboardAvoidingView } from 'react-native';
 
 const QuizBtnAjoutPropositions = ({ navigation, route }) => {
     const { questions, addedQuestionId } = route.params || {};
@@ -20,24 +20,31 @@ const QuizBtnAjoutPropositions = ({ navigation, route }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title}>Sélectionner une question :</Text>
-                <Text style={styles.subtitle}>Etape 3/4</Text>
-            </View>
-            <View style={styles.questions}>
-                {questions ? questions.map((question, index) => (
-                    <TouchableOpacity key={index} style={styles.button} onPress={() => handleQuestionPress(question)}>
-                        <Text style={styles.buttonText}>{question}</Text>
-                    </TouchableOpacity>
-                )) : null}
-                {cpt == 6 ? (
-                    <TouchableOpacity style={styles.buttonFinish} onPress={() => navigation.navigate('Quiz')}>
-                        <Text style={styles.buttonTextFinish}>Terminer la création du quiz</Text>
-                    </TouchableOpacity>
-                ) : (<></>)}
-            </View>
-        </View >
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 25}
+        >
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Sélectionner une question :</Text>
+                        <Text style={styles.subtitle}>Etape 3/4</Text>
+                    </View>
+                    <View style={styles.questions}>
+                        {questions ? questions.map((question, index) => (
+                            <TouchableOpacity key={index} style={styles.button} onPress={() => handleQuestionPress(question)}>
+                                <Text style={styles.buttonText}>{question}</Text>
+                            </TouchableOpacity>
+                        )) : null}
+                        {cpt == 6 ? (
+                            <TouchableOpacity style={styles.buttonFinish} onPress={() => navigation.navigate('Quiz')}>
+                                <Text style={styles.buttonTextFinish}>Terminer la création du quiz</Text>
+                            </TouchableOpacity>
+                        ) : (<></>)}
+                    </View>
+                </View >
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 

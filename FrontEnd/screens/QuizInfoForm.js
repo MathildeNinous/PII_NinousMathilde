@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import CheckBox from 'expo-checkbox';
 
 const QuizInfoForm = ({ navigation }) => {
@@ -7,7 +7,6 @@ const QuizInfoForm = ({ navigation }) => {
     const [description, setDescription] = useState('');
 
     const ajoutQuiz = async () => {
-
         try {
             const response = await fetch('https://memoboostpii.azurewebsites.net/api/QuizApi', {
                 method: 'POST',
@@ -38,31 +37,36 @@ const QuizInfoForm = ({ navigation }) => {
     };
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Ajouter un nouveau quiz</Text>
-                    <Text style={styles.subtitle}>Etape 1/4</Text>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 25}
+        >
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Ajouter un nouveau quiz</Text>
+                        <Text style={styles.subtitle}>Etape 1/4</Text>
+                    </View>
+                    <View style={styles.form}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Titre du quiz'
+                            onChangeText={text => setTitle(text)}
+                            value={title}
+                        />
+                        <TextInput
+                            style={styles.textArea}
+                            placeholder='Description'
+                            onChangeText={text => setDescription(text)}
+                            value={description}
+                        />
+                    </View>
+                    <TouchableOpacity style={styles.button} onPress={ajoutQuiz}>
+                        <Text style={styles.buttonText}>Créer le quiz</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.form}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Titre du quiz'
-                        onChangeText={text => setTitle(text)}
-                        value={title}
-                    />
-                    <TextInput
-                        style={styles.textArea}
-                        placeholder='Description'
-                        onChangeText={text => setDescription(text)}
-                        value={description}
-                    />
-                </View>
-                <TouchableOpacity style={styles.button} onPress={ajoutQuiz}>
-                    <Text style={styles.buttonText}>Créer le quiz</Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
