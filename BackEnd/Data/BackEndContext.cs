@@ -5,7 +5,6 @@ namespace BackEnd.Data;
 
 public class BackEndContext : DbContext
 {
-    public DbSet<AnswerUser> AnswersUser { get; set; } = null!;
     public DbSet<Message> Messages { get; set; } = null!;
     public DbSet<Proposition> Propositions { get; set; } = null!;
     public DbSet<Question> Questions { get; set; } = null!;
