@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const QuizPropositionsForm = ({ navigation, route }) => {
-    const { question, questions, cpt } = route.params;
-    const [currentCount, setCpt] = useState(cpt);
+    const { question, questions } = route.params;
     const [propositions, setPropositions] = useState(Array(3).fill().map(() => ({ text: '', isCorrect: false })));
 
     const handlePropositionChange = (index, text) => {
@@ -36,7 +35,6 @@ const QuizPropositionsForm = ({ navigation, route }) => {
     }
 
     const submitPropositions = async () => {
-        setCpt(currentCount + 1);
         const questionId = await getCurrentQuestionId();
         if (!questionId) {
             return;
@@ -61,11 +59,6 @@ const QuizPropositionsForm = ({ navigation, route }) => {
             if (!response.ok) {
                 throw new Error(`Error ${response.status}: ${response.statusText}`);
             }
-
-            if (currentCount == 5) {
-                navigation.navigate('Quiz');
-            }
-            console.log("currentCount", currentCount);
             navigation.navigate('QuizBtnAjoutPropositions', { questions, addedQuestionId: questionId });
 
         } catch (error) {

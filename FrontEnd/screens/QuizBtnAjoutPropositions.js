@@ -15,9 +15,6 @@ const QuizBtnAjoutPropositions = ({ navigation, route }) => {
 
     const handleQuestionPress = (question) => {
         setCpt(cpt + 1);
-        if (cpt == 5) {
-            navigation.navigate('Quiz');
-        }
         console.log("cpt", cpt);
         navigation.navigate('QuizPropositionsForm', { question, questions, cpt: cpt });
     };
@@ -34,8 +31,13 @@ const QuizBtnAjoutPropositions = ({ navigation, route }) => {
                         <Text style={styles.buttonText}>{question}</Text>
                     </TouchableOpacity>
                 )) : null}
+                {cpt == 6 ? (
+                    <TouchableOpacity style={styles.buttonFinish} onPress={() => navigation.navigate('Quiz')}>
+                        <Text style={styles.buttonTextFinish}>Terminer la création du quiz</Text>
+                    </TouchableOpacity>
+                ) : (<></>)}
             </View>
-        </View>
+        </View >
     );
 };
 
@@ -81,10 +83,33 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
     },
+    buttonFinish: {
+        backgroundColor: '#81B7C1',
+        width: 1000,
+        paddingVertical: 20,
+        paddingHorizontal: 30,
+        marginBottom: 30,
+        borderRadius: 10,
+        marginVertical: 10,
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
     buttonText: {
         fontSize: 25,
         fontWeight: 'bold',
         color: '#81B7C1',
+        textAlign: 'center',
+    },
+    buttonTextFinish: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: 'white',
         textAlign: 'center',
     },
 });
