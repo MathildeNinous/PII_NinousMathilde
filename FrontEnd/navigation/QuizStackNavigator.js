@@ -10,7 +10,7 @@ const QuizStack = createNativeStackNavigator();
 
 const QuizStackNavigator = () => {
     return (
-        <QuizStack.Navigator initialRouteName="Quiz">
+        <QuizStack.Navigator initialRouteName="ChoixActi">
             <QuizStack.Screen name="ChoixActi" component={ChoixActiScreen} options={{ headerTitle: '' }} />
             <QuizStack.Screen name="Quiz" component={QuizScreen} options={{ headerTitle: '' }} />
             <QuizStack.Screen name="QuizQuestions" component={QuizQuestionsScreen} options={{ headerTitle: '' }} />

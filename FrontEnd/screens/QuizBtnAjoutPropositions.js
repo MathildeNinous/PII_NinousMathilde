@@ -15,7 +15,6 @@ const QuizBtnAjoutPropositions = ({ navigation, route }) => {
 
     const handleQuestionPress = (question) => {
         setCpt(cpt + 1);
-        console.log("cpt", cpt);
         navigation.navigate('QuizPropositionsForm', { question, questions, cpt: cpt });
     };
 
