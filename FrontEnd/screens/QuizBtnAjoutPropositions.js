@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, KeyboardAvoidingView } from 'react-native';
 
+//Page contenant les 5 questions venant d'etre crees (sous forme de boutons cliquables)
 const QuizBtnAjoutPropositions = ({ navigation, route }) => {
     const { questions, addedQuestionId } = route.params || {};
     const [cpt, setCpt] = useState(1);
 
+    //savoir si la question à deja été traitée ou non
     const isQuestionAdded = (question) => {
         if (!addedQuestionId) {
             return false;
@@ -13,6 +15,7 @@ const QuizBtnAjoutPropositions = ({ navigation, route }) => {
         return addedQuestion && addedQuestion.id === question.id;
     };
 
+    //quand l'utilisateur appuie sur une question lors de la navigation sur l'écran de QuizInfoForm
     const handleQuestionPress = (question) => {
         setCpt(cpt + 1);
         navigation.navigate('QuizPropositionsForm', { question, questions, cpt: cpt });

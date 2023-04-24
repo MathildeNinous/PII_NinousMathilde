@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
-import CheckBox from 'expo-checkbox';
 
+//Formulaire etape 1 creation quiz
 const QuizInfoForm = ({ navigation }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
+    //Cette fonction envoie une requête POST au serveur pour créer un nouveau quiz avec un titre et une description donnés
+    //ainsi qu'un tableau vide de questions
     const ajoutQuiz = async () => {
         try {
             const response = await fetch('https://memoboostpii.azurewebsites.net/api/QuizApi', {
@@ -24,8 +26,8 @@ const QuizInfoForm = ({ navigation }) => {
                 throw new Error(`Error ${response.status}: ${response.statusText}`);
             }
 
+            //Si la requête est réussie, elle récupère l'ID du quiz nouvellement créé et navigue vers l'écran QuizQuestionsForm avec l'ID du quiz en tant que paramètre
             const data = await response.json();
-            console.log("quiz", data)
             const quizId = data.id;
 
             navigation.navigate('QuizQuestionsForm', { quizId: quizId })

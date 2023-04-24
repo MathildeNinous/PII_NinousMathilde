@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from "react
 
 const backgroundImage = require("../assets/4.jpg");
 
+//Page d'accueil
 const HomeScreen = ({ navigation }) => {
     return (
         <ImageBackground source={backgroundImage} style={styles.backgroundImage}>

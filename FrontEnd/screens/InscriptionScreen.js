@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 
 
+//Formulaire d'inscription
 const InscriptionScreen = ({ navigation }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    //fonction qui envoie une requête POST à l'API pour créer un nouvel utilisateur avec les données d'inscription (email, mot de passe, prénom, nom)
     const handleInscription = async () => {
         try {
             const response = await fetch('https://memoboostpii.azurewebsites.net/api/UserApi', {
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 20,
         width: '70%',
-        height: '60%',
+        height: '80%',
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: '#000',

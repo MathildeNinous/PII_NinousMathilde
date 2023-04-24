@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BackEnd.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class MiseEnPlaceBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -124,54 +124,6 @@ namespace BackEnd.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "AnswersUser",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    QuestionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PropositionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AnswersUser", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AnswersUser_Propositions_PropositionId",
-                        column: x => x.PropositionId,
-                        principalTable: "Propositions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AnswersUser_Questions_QuestionId",
-                        column: x => x.QuestionId,
-                        principalTable: "Questions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AnswersUser_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AnswersUser_PropositionId",
-                table: "AnswersUser",
-                column: "PropositionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AnswersUser_QuestionId",
-                table: "AnswersUser",
-                column: "QuestionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AnswersUser_UserId",
-                table: "AnswersUser",
-                column: "UserId");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_SenderId",
                 table: "Messages",
@@ -197,16 +149,13 @@ namespace BackEnd.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AnswersUser");
-
-            migrationBuilder.DropTable(
                 name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "Scores");
+                name: "Propositions");
 
             migrationBuilder.DropTable(
-                name: "Propositions");
+                name: "Scores");
 
             migrationBuilder.DropTable(
                 name: "Users");

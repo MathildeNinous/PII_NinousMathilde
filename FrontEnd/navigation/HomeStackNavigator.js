@@ -8,7 +8,7 @@ import QuizQuestionsForm from "../screens/QuizQuestionsForm";
 import QuizPropositionsForm from "../screens/QuizPropositionsForm";
 import QuizBtnAjoutPropositions from "../screens/QuizBtnAjoutPropositions";
 
-// Screen stack for Ecole search by Home tab
+//Creation StackNavigator qui contient des écrans pour l'écran d'accueil, l'inscription, la connexion, et des écrans pour la création d'un quiz.
 const HomeStack = createNativeStackNavigator();
 
 const HomeStackNavigator = () => {

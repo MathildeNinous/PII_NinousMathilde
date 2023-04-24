@@ -6,6 +6,7 @@ const StatScreen = () => {
     const [quizData, setQuizData] = useState([]);
     const [scoreData, setScoreData] = useState([]);
 
+    //récupère tous les quiz 
     const fetchQuizData = async () => {
         try {
             const response = await fetch('https://memoboostpii.azurewebsites.net/api/QuizApi');
@@ -16,6 +17,7 @@ const StatScreen = () => {
         }
     };
 
+    //récupère tous les scores
     const fetchScoreData = async () => {
         try {
             const response = await fetch('https://memoboostpii.azurewebsites.net/api/ScoreApi');
@@ -31,10 +33,13 @@ const StatScreen = () => {
         fetchScoreData();
     }, []);
 
+    //retourne le score le plus élevé en filtrant les donénes
     const getBestScore = quizId => {
+        //on filtre les données de score (scoreData) pour récupérer les scores correspondant à ce quiz
         const filteredScores = scoreData.filter(score => score.quizId === quizId);
+
+        //calcul score le plus élevé
         const highestScore = filteredScores.length > 0 ? Math.max(...filteredScores.map(score => score.valeurScore), -Infinity) : null;
-        console.log(highestScore);
         return highestScore;
 
     }
@@ -46,6 +51,7 @@ const StatScreen = () => {
         </View>
     );
 
+    // affiche les scores d'un quiz donné
     const renderScores = quizId => {
         const filteredScores = scoreData.filter(score => score.quizId === quizId);
         const scoresCount = filteredScores.length;

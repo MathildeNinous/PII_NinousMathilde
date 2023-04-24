@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 const quizImage = require("../assets/quiz.jpg");
 const miniJeuImage = require("../assets/mini-jeux.png");
 
+//Page qui permet de choisir entre deux activités (quiz et mini-jeu)
 const ChoixActiScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>

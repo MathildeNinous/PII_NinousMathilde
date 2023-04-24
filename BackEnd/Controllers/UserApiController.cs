@@ -65,7 +65,7 @@ public class UserApiController : ControllerBase
         // Vérifier si le mot de passe est correct
         if (existingUser.Password != request.Password)
         {
-            return BadRequest("Email ou mot de passe incorrect");
+            return BadRequest("Mot de passe incorrect");
         }
 
         // Authentification réussie

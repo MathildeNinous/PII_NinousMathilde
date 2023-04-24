@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native';
 
+//Page de connexion pour les proches 
 const ConnexionScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -8,6 +9,8 @@ const ConnexionScreen = ({ navigation }) => {
     const [isConnectionValid, setIsConnectionValid] = useState(true)
 
 
+    //La fonction qui envoie une requête POST à l'API d'authentification en incluant les informations d'identification
+    //de l'utilisateur 
     const login = async () => {
         try {
             const response = await fetch(
@@ -34,6 +37,7 @@ const ConnexionScreen = ({ navigation }) => {
         }
     };
 
+    //Fonction qui permet d'affiche le message d'erreur de connexion
     const ErrorInfos = () => {
         return isConnectionValid ? <View /> : <Text style={styles.errorTxt}>Email ou mot de passe incorrect(s)</Text>;
     }
@@ -89,7 +93,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 20,
         width: '70%',
-        height: '60%',
+        height: '70%',
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: '#000',
@@ -98,8 +102,9 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
-    erreurLogin: {
-        fontSize: 25
+    erreurTxt: {
+        fontSize: 23,
+        color: 'red'
     },
     header: {
         alignSelf: 'stretch',

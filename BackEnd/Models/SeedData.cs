@@ -27,7 +27,7 @@ public class SeedData
             };
             Quiz quiz3 = new Quiz
             {
-                Title = "Chanteurs et chanteuses célèbres",
+                Title = "Quiz chanson",
                 Description = "Testez vos connaissances sur les chanteurs et chanteuses",
             };
             Quiz quiz4 = new Quiz
@@ -603,13 +603,13 @@ public class SeedData
             Proposition proposition19_1 = new Proposition
             {
                 Text = "Un veau",
-                IsCorrect = true,
+                IsCorrect = false,
                 Question = question19
             };
             Proposition proposition19_2 = new Proposition
             {
                 Text = "Un agneau",
-                IsCorrect = false,
+                IsCorrect = true,
                 Question = question19
             };
             Proposition proposition19_3 = new Proposition

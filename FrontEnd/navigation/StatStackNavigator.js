@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StatScreen from "../screens/StatScreen";
 
-// Screen stack for Ecole search by name tab
+//Définition d'une pile d'écrans de navigation pour la page de statistiques
 const StatStack = createNativeStackNavigator();
 
 const StatStackNavigator = () => {

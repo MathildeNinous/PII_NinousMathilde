@@ -30,6 +30,7 @@ const QuizQuestionsScreen = ({ route, navigation }) => {
                 })
             );
             setQuestions(questionsWithPropositions);
+            
             setLoading(false);
         } catch (error) {
             console.log(error);

@@ -5,7 +5,8 @@ import QuizScreen from '../screens/QuizScreen';
 import QuizQuestionsScreen from '../screens/QuizQuestionsScreen';
 import MiniJeuScreen from "../screens/MiniJeuScreen";
 
-// Screen stack for Ecole search by Home tab
+//pile de navigation permettant à l'utilisateur de naviguer entre les écrans "ChoixActi", "Quiz", "QuizQuestions" et "MiniJeu"
+
 const QuizStack = createNativeStackNavigator();
 
 const QuizStackNavigator = () => {

@@ -5,18 +5,21 @@ const QuizPropositionsForm = ({ navigation, route }) => {
     const { question, questions } = route.params;
     const [propositions, setPropositions] = useState(Array(3).fill().map(() => ({ text: '', isCorrect: false })));
 
+    // mise à jour du texte d'une proposition en modifiant le tableau de propositions d'une question donnée
     const handlePropositionChange = (index, text) => {
         const newPropositions = [...propositions];
         newPropositions[index].text = text;
         setPropositions(newPropositions);
     };
 
+    //mise à jour de l'état des propositions en fonction de leur indice et de leur état de vérification (isChecked).
     const handlePropositionCheck = (index, isChecked) => {
         const newPropositions = [...propositions];
         newPropositions[index].isCorrect = isChecked;
         setPropositions(newPropositions);
     };
 
+    //fonction qui récupère la liste de toutes les questions, cherche ensuite la question actuelle dans cette liste, récupère son ID et le renvoie.
     const getCurrentQuestionId = async () => {
         try {
             const response = await fetch('https://memoboostpii.azurewebsites.net/api/QuestionApi');
@@ -34,13 +37,16 @@ const QuizPropositionsForm = ({ navigation, route }) => {
         }
     }
 
+
+    //fonction qui permet d'ajouter des propositions à une question existante identifiée par questionId.
     const submitPropositions = async () => {
+        //on stocke l'id
         const questionId = await getCurrentQuestionId();
         if (!questionId) {
             return;
         }
 
-        // envoyer les propositions au serveur
+        // on envoie les propositions au serveur
         try {
             const propositionDTOs = propositions.map(proposition => ({
                 Text: proposition.text,
@@ -79,7 +85,9 @@ const QuizPropositionsForm = ({ navigation, route }) => {
                     </View>
                     <View style={styles.propositions}>
                         <Text style={styles.question}>{question}</Text>
-                        <Text style={styles.indication}>----------------------- Cochez la bonne réponse -----------------------</Text>
+                        <Text style={styles.indication}
+                        
+                        >----------------------- Cochez la bonne réponse -----------------------</Text>
                         {propositions.map((proposition, index) => (
                             <View key={index} style={styles.proposition}>
                                 <TextInput

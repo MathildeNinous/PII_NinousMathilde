@@ -5,12 +5,14 @@ const QuizQuestionsForm = ({ navigation, route }) => {
     const { quizId } = route.params;
     const [questions, setQuestions] = useState(Array(5).fill(''));
 
+    //met à jour l'état des questions
     const handleQuestionChange = (index, text) => {
         const newQuestions = [...questions];
         newQuestions[index] = text;
         setQuestions(newQuestions);
     };
 
+    //permet d'ajouter une liste de questions à un quiz 
     const submitQuestions = async () => {
         try {
             const questionDTOs = questions.map(text => ({ Text: text, QuizId: quizId }));
@@ -27,6 +29,7 @@ const QuizQuestionsForm = ({ navigation, route }) => {
                 throw new Error(`Error ${response.status}: ${response.statusText}`);
             }
 
+            //navigue vers la page QuizBtnAjoutPropositions en passant les questions nouvellement ajoutées en paramètre
             navigation.navigate('QuizBtnAjoutPropositions', { questions: questions });
         } catch (error) {
             console.error(error);

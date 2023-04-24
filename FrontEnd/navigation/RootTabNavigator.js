@@ -7,6 +7,9 @@ import StatStackNavigator from "./StatStackNavigator";
 import HomeStackNavigator from "./HomeStackNavigator";
 import QuizStackNavigator from "./QuizStackNavigator";
 
+//Définition d'une barre de navigation en bas de l'écran avec trois onglets qui correspondent à des piles d'écrans différentes
+
+
 const Tab = createBottomTabNavigator();
 
 const RootTabNavigator = () => {
@@ -40,7 +43,7 @@ const RootTabNavigator = () => {
                         fontSize: 25, // Taille du texte des onglets
                         fontWeight: "bold",
                     },
-                    tabBarVisible: route.name !== "HomeStack", // cacher la barre sur la page d'accueil
+                    tabBarVisible: route.name !== "Home", // cacher la barre sur la page d'accueil
                     tabBarActiveTintColor: "#81B7C1", // Couleur de l'icône et du texte lorsqu'un onglet est sélectionné
                     tabBarInactiveTintColor: "gray", // Couleur de l'icône et du texte lorsqu'un onglet n'est pas sélectionné
                 })}
