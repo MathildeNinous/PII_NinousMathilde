@@ -31,7 +31,7 @@ const StatScreen = () => {
     useEffect(() => {
         fetchQuizData();
         fetchScoreData();
-    }, []);
+    }, [quizData, scoreData]);
 
     //retourne le score le plus élevé en filtrant les donénes
     const getBestScore = quizId => {

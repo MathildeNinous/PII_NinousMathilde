@@ -12,7 +12,7 @@ const QuizScreen = () => {
             .then(response => response.json())
             .then(data => setQuizData(data))
             .catch(error => console.log(error));
-    }, []);
+    }, [quizData]);
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('QuizQuestions', item.id)}>
